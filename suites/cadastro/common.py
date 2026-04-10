@@ -9,6 +9,7 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 SCREENSHOTS_DIR = BASE_DIR / "screenshots"
 HOME_URL = "https://www.havanna.com.br/"
 REGISTER_URL = "https://www.havanna.com.br/cadastro"
+LOGIN_ENTRY_SELECTOR = "a[href='/painel-do-cliente']"
 
 
 def dismiss_overlays(page: Page) -> None:
@@ -71,14 +72,22 @@ def wait_for_input_value(page: Page, selector: str, expected_value: str) -> None
 
 
 def open_registration_form(page: Page) -> None:
+    # 1) Sempre começa pela home da Havanna.
     page.goto(HOME_URL, wait_until="domcontentloaded", timeout=120000)
     page.wait_for_load_state("networkidle")
     dismiss_overlays(page)
+    if page.url.rstrip("/") != HOME_URL.rstrip("/"):
+        raise AssertionError(f"Fluxo não iniciou na home esperada: {page.url!r}")
 
-    page.get_by_role("link", name="Login | Cadastre-se").click()
+    # 2) Clica explicitamente no "Login | Cadastre-se".
+    login_entry = page.locator(LOGIN_ENTRY_SELECTOR)
+    if login_entry.count() == 0:
+        raise AssertionError("Link 'Login | Cadastre-se' não foi encontrado na home.")
+    login_entry.first.click()
     page.wait_for_load_state("networkidle")
     dismiss_overlays(page)
 
+    # 3) Mantém o fluxo já existente até a tela de cadastro.
     register_link = page.locator("a[href='/cadastro']")
     register_link.evaluate("(element) => element.click()")
     page.wait_for_url("**/cadastro", timeout=120000)
