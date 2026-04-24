@@ -1,0 +1,14 @@
+﻿{
+  "name": "teste-tecnico-amazon-playwright",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Teste tecnico Amazon com Playwright Test",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}

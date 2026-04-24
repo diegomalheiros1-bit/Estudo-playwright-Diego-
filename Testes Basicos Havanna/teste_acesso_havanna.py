@@ -35,6 +35,7 @@ def run(playwright: Playwright) -> None:
     context.close()
     # Fecha o navegador.
     browser.close()
+    print("Teste de acesso Havanna finalizado.")
 
 
 # Inicia o Playwright e garante encerramento automático dos recursos.

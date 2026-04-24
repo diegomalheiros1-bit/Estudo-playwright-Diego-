@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+
+# Logs
+debug.log
+*.log
+
+# Node / Playwright
+teste-tecnico-amazon/node_modules/
+teste-tecnico-amazon/test-results/
+teste-tecnico-amazon/playwright-report/
